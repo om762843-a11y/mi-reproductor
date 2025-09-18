@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor Sin Anuncios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="video-container">
+        <div id="video-wrapper">
+            <div id="loading-message">Cargando...</div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const encodedUrl = params.get('video');
+            const videoWrapper = document.getElementById('video-wrapper');
+
+            if (encodedUrl) {
+                try {
+                    const videoUrl = atob(encodedUrl);
+                    const iframe = document.createElement('iframe');
+                    iframe.src = videoUrl;
+                    iframe.allow = 'autoplay; fullscreen';
+                    iframe.allowFullscreen = true;
+                    iframe.setAttribute('class', 'video-player');
+                    
+                    videoWrapper.innerHTML = ''; // Limpia el mensaje de carga
+                    videoWrapper.appendChild(iframe);
+                } catch (e) {
+                    videoWrapper.innerHTML = '<p class="error-message">Error: URL de video inválida.</p>';
+                }
+            } else {
+                videoWrapper.innerHTML = '<p class="error-message">Error: No se ha proporcionado una URL de video.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
